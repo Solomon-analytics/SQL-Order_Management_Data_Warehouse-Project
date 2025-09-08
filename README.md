@@ -1,6 +1,6 @@
 # Order Management Data Warehouse Project
 
-Welcome to the **SQL-Order_Management_Data_Warehouse-Project** repository!
+Welcome to the **Order Management Data Warehouse Project** repository!
 This project is developed to demonstrate a comprehensive data warehousing and analytics solution, building a data warehouse to generating actionable insights. Designed as a portfolio project to showcase industry best practices in data engineering and analytics.
 
 ---

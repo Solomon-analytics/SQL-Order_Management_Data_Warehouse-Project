@@ -1,1 +1,547 @@
 
+/*===========================================================================================
+Objective 1:
+## Data Cleaning: Whitespace trimming, unwanted characters removed, Numerical fields normalised
+## Clean and standardise unique identifier
+## Ensured naming convention in both tables follow a consistent format
+## Data Transformation: finding and Filling N/a Values
+## Data standardisation (Euros, £,$) converted to USD format
+## Derived columns(Customer_country, customer_state & Customer_postcode) from existing column
+## Derived columns(Store_country, Store_state) from existing column
+## Date ids convered to Date format
+## Window function combined with Common table expression for removal of duplicates
+
+Objective 2:
+Create a staging view: this eliminates source-specific cleaning rules
+============================================================================================*/
+/*--------------------------------------------------------------------------------------------
+    -- ERP Customer Staging
+---------------------------------------------------------------------------------------------*/
+
+
+
+
+CREATE OR REPLACE VIEW staging_erp_customer AS
+SELECT
+TRIM(REPLACE(id, '~~', '')) AS Customer_id,
+CASE
+    WHEN TRIM(status) = 'Active' THEN 'A'
+    WHEN TRIM(status) = 'Inactive' THEN 'I'
+    ELSE 'n/a' END AS Customer_Status,
+TRIM(REGEXP_REPLACE(REGEXP_REPLACE(names, '[-_~&.\',]', ''), '\\s+', ' ')) AS Full_Name,
+TRIM(SUBSTRING_INDEX(address, ',', 2)) AS Customer_Address,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, '(', -1), ')', 1)) AS Customer_Country,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', -1), ' ', -2)) AS Customer_Postcode,
+CASE 
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Seville%' THEN 'Seville'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Brussels%' THEN 'Brussels'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Tokyo%' THEN 'Tokyo'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Munich%' THEN 'Munich'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Krakow%' THEN 'Krakow'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Dubai%' THEN 'Dubai'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Brno%' THEN 'Brno'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Copenhagen%' THEN 'Copenhagen'
+    ELSE TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) END AS Customer_State,
+TRIM(email) AS Email,
+CASE
+    WHEN TRIM(Gender) = 'F' THEN TRIM('Female')
+    WHEN TRIM(Gender) = 'M' THEN TRIM('Male')
+    ELSE 'N/A' END AS Gender,
+TRIM(Age) AS Age,
+Now() AS creation_date,
+CASE
+  WHEN email NOT LIKE '%@%.%' THEN 'INVALID_EMAIL'
+  WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) IS NULL THEN 'missing_state'
+  WHEN Id IS NULL THEN 'Missing Id'
+  ELSE 'OK' END AS data_quality_flag
+FROM bronze_erp_customer_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- ERP Customer Staging
+---------------------------------------------------------------------------------------------*/
+
+CREATE OR REPLACE VIEW staging_crm_customer AS 
+SELECT
+TRIM(REPLACE(id, '.', '')) AS Customer_id,
+TRIM(status) AS customer_status,
+TRIM(REGEXP_REPLACE(REGEXP_REPLACE(names, '[-_''~&.,]', ''), '\\s+', ' ')) AS Customer_Full_Name,
+TRIM(SUBSTRING_INDEX(address, ',', 2)) AS Customer_Address,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, '(', -1), ')', 1)) AS Customer_Country,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', -1), ' ', -2)) AS Customer_Postcode,
+CASE 
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Seoul%' THEN 'Seoul'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Geneva%' THEN 'Geneva'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Shanghai%' THEN 'Shanghai'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Mexico City%' THEN 'Mexico City'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Osaka%' THEN 'Osaka'
+	WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Dubai%' THEN 'Dubai'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Krakow%' THEN 'Krakow'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Valparaiso%' THEN 'Valparaiso'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Milan%' THEN 'Milan'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Vancouver%' THEN 'Vancouver'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Brussels%' THEN 'Brussels'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Bengaluru%' THEN 'Bengaluru'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Salzburg%' THEN 'Salzburg'
+    WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) = 'N/A' AND address LIKE '%Barcelona%' THEN 'Barcelona'
+    ELSE TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) END AS Customer_State,
+TRIM(email) AS Customer_Email,
+CASE
+    WHEN TRIM(Gender) = 'F' THEN TRIM('Female')
+    WHEN TRIM(Gender) = 'M' THEN TRIM('Male')
+    ELSE 'n/a' END AS Gender,
+TRIM(Age) AS Customer_Age,
+Now() AS creation_date,
+CASE
+  WHEN email NOT LIKE '%@%.%' THEN 'INVALID_EMAIL'
+  WHEN TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(address, ',', 4), ',', -1)) IS NULL THEN 'Missing_ state'
+  WHEN Id IS NULL THEN 'Missing Id'
+  ELSE 'OK' END AS data_quality_flag
+FROM bronze_crm_customer_info;
+
+
+
+/*--------------------------------------------------------------------------------------------
+    -- crm Product Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_crm_product AS 
+SELECT 
+TRIM(product_id) AS Product_Id,
+CASE
+	WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Storage & Organization%' THEN 'Storage & Organization'
+	WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Kids & Baby Clothing%' THEN 'Kids & Baby Clothing'
+	WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Oils & Fluids%' THEN 'Oils & Fluids'
+	ELSE TRIM(SUBSTRING_INDEX(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', ''), ' ', 3)) 
+    END AS Product_Name, 
+
+CASE WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Beauty & Personal Care%' THEN 'Beauty & Personal Care'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Fashion & Apparel%' THEN 'Fashion & Apparel'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Electronics%' THEN 'Electronics'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Sports & Fitness%' THEN 'Sports & Fitness'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Automotive%' THEN 'Automotive'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Home & Living%' THEN 'Home & Living'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Home & Living%' THEN 'Home & Living'
+     ELSE TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) 
+     END AS Product_Category, 
+    
+TRIM(Product_number) AS Product_Number,
+CASE
+    WHEN TRIM(product_Price) LIKE '%EUROS%' THEN CAST(REPLACE(product_price, 'EUROS', '') AS DECIMAL(10,2)) * 1.17
+    WHEN TRIM(product_Price) LIKE '%€%' THEN CAST(REPLACE(product_price, 'EUROS', '') AS DECIMAL(10,2)) * 1.17
+	WHEN TRIM(product_price) LIKE '%£%' THEN CAST(REPLACE(product_price, '£', '') AS DECIMAL(10,2)) * 1.30
+    WHEN TRIM(product_price) LIKE '%Pounds%' THEN CAST(REPLACE(product_price, '£', '') AS DECIMAL(10,2)) * 1.30
+	WHEN TRIM(product_Price) LIKE '%$%' THEN CAST(REPLACE(product_price, '$', '') AS DECIMAL(10,2)) * 1
+    WHEN TRIM(product_Price) LIKE '%USD%' THEN CAST(REPLACE(product_price, '$', '') AS DECIMAL(10,2)) * 1
+ELSE TRIM(product_Price) END AS Product_Price_USD,
+NOW() AS Creation_date
+FROM bronze_crm_product_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- erp Product Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_erp_product AS 
+
+SELECT 
+TRIM(product_id) AS Product_Id,
+CASE
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Headphones & Earbuds%' THEN 'Headphones & Earbuds'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Bags & Accessories%' THEN 'Bags & Accessories'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%wrist watches%' THEN 'wrist watches'
+     ELSE TRIM(SUBSTRING_INDEX(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', ''), ' ', 3)) 
+     END AS Product_Name, 
+     
+CASE WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Beauty & Personal Care%' THEN 'Beauty & Personal Care'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Fashion & Apparel%' THEN 'Fashion & Apparel'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Electronics%' THEN 'Electronics'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Sports & Fitness%' THEN 'Sports & Fitness'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Automotive%' THEN 'Automotive'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Home & Living%' THEN 'Home & Living'
+     WHEN TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) LIKE '%Home & Living%' THEN 'Home & Living'
+     ELSE TRIM(REPLACE(REGEXP_REPLACE(product_name,'\\s+', ' '),'~', '')) 
+     END AS Product_Category, 
+
+TRIM(Product_number) AS Product_Number,
+TRIM(product_creation_date_id) AS Product_Creation_Date_Id,
+CASE
+    WHEN TRIM(product_Price) LIKE '%EUROS%' THEN CAST(REPLACE(product_price, 'EUROS', '') AS DECIMAL(10,2)) * 1.17
+    WHEN TRIM(product_Price) LIKE '%€%' THEN CAST(REPLACE(product_price, '€', '') AS DECIMAL(10,2)) * 1.17
+	WHEN TRIM(product_price) LIKE '%£%' THEN CAST(REPLACE(product_price, '£', '') AS DECIMAL(10,2)) * 1.30
+    WHEN TRIM(product_price) LIKE '%Pounds%' THEN CAST(REPLACE(product_price, 'Pounds', '') AS DECIMAL(10,2)) * 1.30
+	WHEN TRIM(product_Price) LIKE '%$%' THEN CAST(REPLACE(product_price, '$', '') AS DECIMAL(10,2)) * 1
+    WHEN TRIM(product_Price) LIKE '%USD%' THEN CAST(REPLACE(product_price, 'USD', '') AS DECIMAL(10,2)) * 1
+    ELSE TRIM(product_Price) END AS Product_Price_USD,
+NOW() AS Creation_date
+FROM bronze_erp_product_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- crm store products Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_crm_store_product AS
+
+SELECT
+TRIM(REGEXP_REPLACE(store_location_id, '[-_~&,]', '')) AS Store_Location_Id,
+TRIM(REGEXP_SUBSTR(product_id, 'PRD-[A-Z-]+-[0-9]+')) AS Product_id,
+TRIM(REGEXP_REPLACE(IFNULL(Available_quantity, 0), '[-_~&.+\',]', '')) AS Available_Quantity,
+TRIM(REGEXP_REPLACE(IFNULL(Blocked_Quantity, 0), '[-_+~~]', '')) AS Blocked_Quantity,
+TRIM(received_date_id) AS received_date_id,
+NOW() AS creation_date
+FROM bronze_crm_Store_products_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- erp store products Staging
+---------------------------------------------------------------------------------------------*/
+
+CREATE OR REPLACE VIEW staging_erp_store_product AS
+
+SELECT
+TRIM(REGEXP_REPLACE(store_location_id, '[-_~&,]', '')) AS Store_Location_Id,
+TRIM(REGEXP_SUBSTR(product_id, 'PRD-[A-Z-]+-[0-9]+')) AS Product_id,
+TRIM(REGEXP_REPLACE(IFNULL(Available_quantity, 0), '[-_~&.+\',]', '')) AS Available_Quantity,
+REGEXP_REPLACE(IFNULL(Blocked_Quantity, 0), '[-_+~~]', '') AS Blocked_Quantity,
+TRIM(received_date_id) AS received_date_id,
+NOW() AS creation_date
+FROM bronze_erp_Store_products_info;
+
+/*--------------------------------------------------------------------------------------------
+    -- crm store Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_crm_store AS
+
+SELECT
+TRIM(Store_location_id) AS Store_location_id,
+TRIM(SUBSTRING_INDEX(store_location_address, ',', 2)) AS Store_Address,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(store_location_address, ',', 3), ',', -1)) AS Store_City,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(store_location_address, '(', -1), ')', 1)) AS Store_Country,
+TRIM(SUBSTRING_INDEX(store_location_address, ' ', -2)) AS Store_PostCode,
+NOW() AS creation_date
+FROM bronze_crm_store_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- erp store Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_erp_store AS
+
+SELECT
+TRIM(REGEXP_REPLACE(Store_location_id, '[~]', '')) AS Store_Location_Id,
+TRIM(SUBSTRING_INDEX(store_location_address, ',', 2)) AS Store_Address,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(store_location_address, ',', 3), ',', -1)) AS Store_City,
+TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(store_location_address, '(', -1), ')', 1)) AS Store_Country,
+TRIM(SUBSTRING_INDEX(store_location_address, ' ', -2)) AS Store_PostCode,
+NOW() AS creation_date
+FROM bronze_erp_store_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- erp sales person Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_erp_sales_person AS
+
+SELECT 
+TRIM(Sales_person_id) AS Sales_Person_Id,
+TRIM(REGEXP_REPLACE(store_location_id, '[~]', '')) AS Store_Location_Id,
+TRIM(REGEXP_REPLACE(REGEXP_REPLACE(sales_person_full_name, '[-_''~&.,]', ''), '\\s+', ' ')) AS Sales_Person_Full_Name,
+is_manager,
+CASE
+    WHEN TRIM(Salary) LIKE '%EUROS%' THEN CAST(REPLACE(salary, 'EUROS', '') AS DECIMAL(10,2)) * 1.17
+    WHEN TRIM(Salary) LIKE '%€%' THEN CAST(REPLACE(salary, '€', '') AS DECIMAL(10,2)) * 1.17
+	WHEN TRIM(Salary) LIKE '%£%' THEN CAST(REPLACE(salary, '£', '') AS DECIMAL(10,2)) * 1.30
+    WHEN TRIM(Salary) LIKE '%Pounds%' THEN CAST(REPLACE(salary, 'pounds', '') AS DECIMAL(10,2)) * 1.30
+	WHEN TRIM(Salary) LIKE '%$%' THEN CAST(REPLACE(salary, '$', '') AS DECIMAL(10,2)) * 1
+    WHEN TRIM(Salary) LIKE '%USD%' THEN CAST(REPLACE(salary, 'USD', '') AS DECIMAL(10,2)) * 1
+ELSE TRIM(salary) END AS Sales_Person_Salary_USD,
+NOW() AS created_date
+FROM bronze_erp_Sales_person_info;
+
+
+/*--------------------------------------------------------------------------------------------
+    -- erp sales details Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_erp_sales_details AS
+
+WITH erp_sales_table AS (
+SELECT 
+*,
+ROW_NUMBER() OVER ( PARTITION BY Order_id, customer_id, product_id, Store_Location_id, Invoice_number ORDER BY order_creation_date_id DESC) AS RN
+FROM bronze_erp_sales_details
+),
+
+erp_sales_table2 AS (
+SELECT
+TRIM(order_id) AS Order_id,
+TRIM(product_id) AS Product_id,
+CASE 
+	WHEN Store_location_id = 'STORE010~~' THEN 'STORE10'
+    ELSE TRIM(REGEXP_REPLACE(Store_location_id, '[~]', '')) END AS Store_Location_Id,
+REGEXP_REPLACE(customer_id, '[.~\']', '') AS Customer_id,
+TRIM(sales_person_id) AS Sales_Person_Id,
+TRIM(order_number) AS Order_Number,
+TRIM(Order_Line_status) AS Order_Line_Status,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(DISCOUNT_AMOUNT,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10,3)) AS Discount_Amount_USD,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(Ordered_quantity,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10, 3)) AS Ordered_Quantity,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(cancelled_quantity,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10,3)) AS Cancelled_Quantity,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(returned_quantity,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10,3)) AS Returned_Quantity,
+CASE WHEN shipping_cost LIKE '%EUROS%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, 'EUROS', '') AS DECIMAL(10,2))) * 1.17, 3)
+	 WHEN shipping_cost LIKE '%USD%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, 'USD', '') AS DECIMAL(10,2))) * 1, 3)
+     WHEN shipping_cost LIKE '%£%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, '£', '') AS DECIMAL(10,2))) * 1.30, 3)
+     WHEN shipping_cost LIKE '%€%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, '€', '') AS DECIMAL(10,2))) * 1.17, 3)
+     WHEN shipping_cost LIKE '%$%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, '$', '') AS DECIMAL(10,2))) * 1, 3)
+ELSE ROUND(TRIM(shipping_cost), 3) END AS shipping_cost_USD, ## converts 'EUROS' and '£' to USD,
+customer_request_dateid,
+STR_TO_DATE(customer_request_dateid, '%Y%m%d') AS Customer_Request_Date,
+actual_shipment_dateid,
+STR_TO_DATE(actual_shipment_dateid, '%Y%m%d') AS Actual_Shipment_Date,
+TRIM(payment_method) AS Payment_Method,
+order_creation_date_id,
+STR_TO_DATE(order_creation_date_id, '%Y%m%d') AS Order_Creation_Date,
+TRIM(product_number) AS Product_Number,
+TRIM(invoice_number) AS Invoice_Number,
+TRIM(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(sales_person_full_name,'[&~,.\'\-]', ''),'\\s+', ' '),'~', '')) AS Sales_Person_Name
+FROM erp_sales_table 
+WHERE RN = 1)
+SELECT
+Order_id,
+Product_id,
+Store_Location_Id,
+Customer_id,
+Sales_Person_Id,
+Order_Number,
+Order_Line_Status,
+Discount_Amount_USD,
+CASE
+    WHEN Ordered_Quantity < 0 THEN 0 ELSE Ordered_Quantity END AS Ordered_Quantity,
+CASE
+    WHEN Cancelled_Quantity > ordered_quantity THEN 0 ELSE cancelled_quantity END AS cancelled_quantity,
+CASE
+    WHEN Returned_Quantity > ordered_quantity THEN 0 ELSE returned_quantity END AS returned_quantity,
+shipping_cost_USD, 
+customer_request_dateid,
+Customer_Request_Date,
+actual_shipment_dateid,
+Actual_Shipment_Date,
+Payment_Method,
+order_creation_date_id,
+Order_Creation_Date,
+Product_Number,
+Invoice_Number,
+Sales_Person_Name,
+NOW() AS creation_date
+FROM erp_sales_table2
+WHERE order_id NOT LIKE '%DUP%';
+
+
+/*--------------------------------------------------------------------------------------------
+    -- crm sales details Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_crm_sales_details AS
+
+WITH crm_sales_table AS (
+SELECT 
+*,
+ROW_NUMBER() OVER ( PARTITION BY Order_id, customer_id, product_id, Store_Location_id, Invoice_number ORDER BY order_creation_date_id DESC) AS BN
+FROM bronze_crm_sales_details
+),
+
+crm_sales_table2 AS (
+SELECT
+TRIM(order_id) AS Order_id,
+TRIM(product_id) AS Product_id,
+TRIM(Store_location_id) AS Store_Location_Id,
+REGEXP_REPLACE(customer_id, '[.]', '') AS Customer_id,
+TRIM(sales_person_id) AS Sales_Person_Id,
+TRIM(order_number) AS Order_Number,
+TRIM(Order_Line_status) AS Order_Line_Status,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(DISCOUNT_AMOUNT,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10,3)) AS Discount_Amount_USD,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(Ordered_quantity,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10, 3)) AS Ordered_Quantity,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(cancelled_quantity,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10,3)) AS Cancelled_Quantity,
+CAST(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(returned_quantity,'[+-]', ''),'\\s+', ' '),'~', '') AS DECIMAL(10,3)) AS Returned_Quantity,
+CASE WHEN shipping_cost LIKE '%EUROS%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, 'EUROS', '') AS DECIMAL(10,2))) * 1.17, 3)
+     WHEN shipping_cost LIKE '%USD%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, 'USD', '') AS DECIMAL(10,2))) * 1, 3)
+     WHEN shipping_cost LIKE '%£%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, '£', '') AS DECIMAL(10,2))) * 1.30, 3)
+     WHEN shipping_cost LIKE '%€%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, '€', '') AS DECIMAL(10,2))) * 1.17, 3)
+     WHEN shipping_cost LIKE '%$%' THEN ROUND(TRIM(CAST(REPLACE(shipping_cost, '$', '') AS DECIMAL(10,2))) * 1, 3)
+ELSE ROUND(TRIM(shipping_cost), 3) END AS shipping_cost_USD, ## converts 'EUROS' and '£' to USD
+customer_request_dateid,
+STR_TO_DATE(customer_request_dateid, '%Y%m%d') AS Customer_Request_Date,
+actual_shipment_dateid,
+STR_TO_DATE(actual_shipment_dateid, '%Y%m%d') AS Actual_Shipment_Date,
+TRIM(payment_method) AS Payment_Method,
+order_creation_date_id,
+STR_TO_DATE(order_creation_date_id, '%Y%m%d') AS Order_Creation_Date,
+TRIM(product_number) AS Product_Number,
+TRIM(invoice_number) AS Invoice_Number,
+TRIM(REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(sales_person_full_name,'[&~,.\'\-]', ''),'\\s+', ' '),'~', '')) AS Sales_Person_Name
+FROM crm_sales_table
+WHERE BN=1
+)
+
+SELECT
+Order_id,
+Product_id,
+Store_Location_Id,
+Customer_id,
+Sales_Person_Id,
+Order_Number,
+Order_Line_Status,
+Discount_Amount_USD,
+CASE
+    WHEN Ordered_Quantity < 0 THEN 0 ELSE Ordered_Quantity END AS Ordered_Quantity,
+CASE
+    WHEN Cancelled_Quantity > ordered_quantity THEN 0 ELSE cancelled_quantity END AS cancelled_quantity,
+CASE
+    WHEN Returned_Quantity > ordered_quantity THEN 0 ELSE returned_quantity END AS returned_quantity,
+shipping_cost_USD,
+customer_request_dateid,
+Customer_Request_Date,
+actual_shipment_dateid,
+Actual_Shipment_Date,
+Payment_Method,
+order_creation_date_id,
+Order_Creation_Date,
+Product_Number,
+Invoice_Number,
+Sales_Person_Name,
+NOW() AS created_date
+FROM crm_sales_table2
+WHERE order_id NOT LIKE '%DUP%';
+
+
+/*--------------------------------------------------------------------------------------------
+    -- crm ship details Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_crm_ship_details AS
+WITH crm_Table AS (
+SELECT
+*,
+ROW_NUMBER() OVER ( PARTITION BY Ship_id, order_id, product_id, store_location_id, customer_id ORDER BY Ship_date_id DESC) AS BN
+FROM bronze_crm_Ship_details),
+
+crm_table2 AS (
+SELECT
+TRIM(Order_id) AS Order_id,
+TRIM(REGEXP_REPLACE(REGEXP_REPLACE(ship_id,'[+~]', ''),'\\s+', ' ')) AS Ship_id,
+TRIM(Product_id) AS Product_id,
+TRIM(Store_location_id) AS Store_Location_Id,
+TRIM(delivery_status) AS Delivery_Status,
+TRIM(REGEXP_REPLACE(Customer_id, '[.]', '')) AS Customer_id,
+TRIM(delivery_number) AS Delivery_Number,
+TRIM(delivery_type) AS Delivery_Type,
+CAST(REGEXP_REPLACE(cancelled_quantity, '[+~-]', '') AS DECIMAL(10,2)) AS cancelled_quantity,
+CAST(REGEXP_REPLACE(shipped_quantity, '[+~-]', '') AS DECIMAL(10,2)) AS shipped_quantity,
+delivery_dateid,
+CASE WHEN delivery_dateid REGEXP '^[0-9]{8}$'THEN STR_TO_DATE(delivery_dateid, '%Y%m%d')
+     ELSE NULL END AS Delivery_Date,
+ship_date_id,
+CASE WHEN ship_date_id REGEXP '^[0-9]{8}$'THEN STR_TO_DATE(ship_date_id, '%Y%m%d')
+     ELSE NULL END AS Ship_Date,
+TRIM(shipping_Method) AS Shipping_Method,
+TRIM(Carrier) AS Carrier_Type,
+TRIM(tracking_Number) AS Tracking_Number
+FROM crm_Table AS BT
+WHERE BT.BN = 1)
+
+SELECT
+Order_id,
+Ship_id,
+Product_id,
+Store_Location_Id,
+Delivery_Status,
+Customer_id,
+Delivery_Number,
+Delivery_Type,
+CASE
+    WHEN cancelled_quantity > shipped_quantity THEN 0
+    ELSE cancelled_quantity END AS cancelled_quantity,
+shipped_quantity,
+(shipped_quantity - cancelled_quantity) AS delivered_quantity,
+delivery_dateid,
+Delivery_Date,
+ship_date_id,
+Ship_Date,
+Shipping_Method,
+Carrier_Type,
+Tracking_Number,
+NOW() AS created_date,
+CASE
+  WHEN delivery_date < ship_date THEN 'Bad Data'
+  ELSE 'OK' END AS Delivery_ship_data_quality_check
+FROM crm_table2
+WHERE order_id NOT LIKE '%Dup%';
+
+
+
+/*--------------------------------------------------------------------------------------------
+    -- erp ship details Staging
+---------------------------------------------------------------------------------------------*/
+CREATE OR REPLACE VIEW staging_erp_ship_details AS
+
+WITH erp_Table AS 
+(
+SELECT
+*,
+ROW_NUMBER() OVER ( PARTITION BY Ship_id, order_id, product_id, store_location_id, customer_id ORDER BY Ship_date_id DESC) AS BN
+FROM bronze_erp_Ship_details),
+
+erp_Table2 AS 
+(
+SELECT
+TRIM(Order_id) AS Order_id,
+TRIM(REGEXP_REPLACE(REGEXP_REPLACE(ship_id,'[+~]', ''),'\\s+', ' ')) AS Ship_id,
+TRIM(Product_id) AS Product_id,
+CASE 
+    WHEN Store_location_id = 'STORE010~~' THEN 'STORE10'
+	ELSE TRIM(REGEXP_REPLACE(Store_location_id, '[~]', '')) END AS Store_Location_Id,
+TRIM(delivery_status) AS Delivery_Status,
+TRIM(REGEXP_REPLACE(Customer_id, '[~]', '')) AS Customer_id,
+TRIM(delivery_number) AS Delivery_Number,
+TRIM(delivery_type) AS Delivery_Type,
+CAST(REGEXP_REPLACE(cancelled_quantity, '[+~-]', '') AS DECIMAL(10,2)) AS cancelled_quantity,
+CAST(REGEXP_REPLACE(shipped_quantity, '[+~-]', '') AS DECIMAL(10,2)) AS shipped_quantity,
+delivery_dateid,
+CASE WHEN delivery_dateid REGEXP '^[0-9]{8}$'THEN STR_TO_DATE(delivery_dateid, '%Y%m%d')
+     ELSE NULL END AS Delivery_Date,
+ship_date_id,
+CASE 
+     WHEN ship_date_id REGEXP '^[0-9]{8}$'THEN STR_TO_DATE(ship_date_id, '%Y%m%d')
+     ELSE NULL END AS Ship_Date,
+TRIM(shipping_Method) AS Shipping_Method,
+TRIM(Carrier) AS Carrier_Type,
+TRIM(tracking_Number) AS Tracking_Number
+FROM erp_table BT
+WHERE BT.BN = 1)
+
+SELECT
+Order_id,
+Ship_id,
+Product_id,
+Store_Location_Id,
+Delivery_Status,
+Customer_id,
+Delivery_Number,
+Delivery_Type,
+CASE
+    WHEN cancelled_quantity > shipped_quantity THEN 0
+    ELSE cancelled_quantity END AS cancelled_quantity,
+shipped_quantity,
+(shipped_quantity - cancelled_quantity) AS delivered_quantity,
+delivery_dateid,
+Delivery_Date,
+ship_date_id,
+Ship_Date,
+Shipping_Method,
+Carrier_Type,
+Tracking_Number,
+NOW() AS created_date,
+CASE
+  WHEN delivery_date < ship_date THEN 'Bad Data'
+  ELSE 'OK' END AS Delivery_ship_data_quality_check
+FROM erp_Table2
+WHERE order_id NOT LIKE '%Dup%';
+
+
+
+
+

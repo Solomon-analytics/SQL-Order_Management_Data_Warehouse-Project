@@ -12,7 +12,7 @@ Objective 1:
 ## Window function combined with Common table expression for removal of duplicates
 
 Objective 2:
-Create a staging view: this eliminates source-specific cleaning rules
+Create a staging view
 ============================================================================================*/
 /*--------------------------------------------------------------------------------------------
     -- ERP Customer Staging

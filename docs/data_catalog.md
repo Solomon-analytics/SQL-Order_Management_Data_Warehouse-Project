@@ -1,15 +1,9 @@
-Got it 👍🏽 — you want me to create a **Data Product Catalog (Data Dictionary)** for your **Gold Layer** based on the SQL you shared, in the same structured format as your example. I’ll follow your requested style (overview → purpose → columns with descriptions, datatypes, and business meaning).
-
-Here’s the full catalog:
-
----
-
-# 📘 Data Dictionary for Gold Layer
+# Data Dictionary for Gold Layer
 
 ## Overview
 
 The **Gold Layer** is the business-level data representation, structured to support analytical and reporting use cases.
-It consists of **dimension tables** and **fact tables** that capture core sales order management business processes: customer, product, store, sales rep, orders, shipments, and inventory.
+It consists of **dimension tables** and **fact tables** that capture sales order management business processes: customer, product, store, sales rep, orders, shipments, and inventory.
 
 ---
 
@@ -17,20 +11,20 @@ It consists of **dimension tables** and **fact tables** that capture core sales 
 
 **Purpose**: Stores customer details enriched with demographic and geographic data for analytics.
 
-| Column Name          | Data Type    | Description                                              |
-| -------------------- | ------------ | -------------------------------------------------------- |
-| customer\_key        | VARCHAR(42)  | Surrogate key uniquely identifying each customer record. |
-| customer\_id         | VARCHAR(10)  | Natural identifier assigned to each customer.            |
-| customer\_full\_name | VARCHAR(100) | Customer’s full name.                                    |
-| customer\_address    | VARCHAR(255) | Customer’s address.                                      |
-| customer\_state      | VARCHAR(30)  | Customer’s state of residence.                           |
-| customer\_country    | VARCHAR(30)  | Customer’s country of residence.                         |
-| customer\_postcode   | VARCHAR(20)  | Customer’s postal code.                                  |
-| customer\_age        | INT          | Customer’s age (derived from source data).               |
-| customer\_gender     | VARCHAR(10)  | Customer’s gender.                                       |
-| dq\_record\_status   | VARCHAR(10)  | Data quality flag (Valid / Invalid).                     |
-| etl\_load\_timestamp | TIMESTAMP    | ETL load timestamp for audit.                            |
-| etl\_source          | VARCHAR(50)  | ETL metadata source table name.                          |
+| Column Name          | Data Type    | Description                                                                           |
+| -------------------- | ------------ | --------------------------------------------------------------------------------------|                              
+| customer\_key        | VARCHAR(42)  | Surrogate key uniquely identifying each customer record: CONCAT('1','-', customer_id) |
+| customer\_id         | VARCHAR(10)  | Natural identifier assigned to each customer.                                         |
+| customer\_full\_name | VARCHAR(100) | Customer’s full name.                                                                 |
+| customer\_address    | VARCHAR(255) | Customer’s address.                                                                   |
+| customer\_state      | VARCHAR(30)  | Customer’s state of residence.                                                        |
+| customer\_country    | VARCHAR(30)  | Customer’s country of residence.                                                      |
+| customer\_postcode   | VARCHAR(20)  | Customer’s postal code.                                                               |
+| customer\_age        | INT          | Customer’s age (derived from source data).                                            |
+| customer\_gender     | VARCHAR(10)  | Customer’s gender.                                                                    |
+| dq\_record\_status   | VARCHAR(10)  | Data quality flag (Valid / Invalid).                                                  |
+| etl\_load\_timestamp | TIMESTAMP    | ETL load timestamp for audit.                                                         |
+| etl\_source          | VARCHAR(50)  | ETL metadata source table name.                                                       |
 
 ---
 
@@ -194,6 +188,3 @@ It consists of **dimension tables** and **fact tables** that capture core sales 
 
 ---
 
-✅ This catalog now gives you a **professional documentation-style view** of your **Gold Layer data products**, aligned to your SQL definitions.
-
-Do you also want me to package this up into a **PDF/slide deck** so you can include it in your **portfolio/projects**?

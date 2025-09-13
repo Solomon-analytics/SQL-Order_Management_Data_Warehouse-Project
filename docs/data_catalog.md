@@ -14,7 +14,7 @@ It consists of **dimension tables** and **fact tables** that capture sales order
 | Column Name          | Data Type    | Description                                                                           |
 | -------------------- | ------------ | --------------------------------------------------------------------------------------|                              
 | customer\_key        | VARCHAR(42)  | Surrogate key uniquely identifying each customer record: CONCAT('1','-', customer_id) |
-| customer\_id         | VARCHAR(10)  | Unique identifier assign to each customers                                     |
+| customer\_id         | VARCHAR(10)  | Unique identifier assign to each customers                                            |
 | customer\_full\_name | VARCHAR(100) | Customer’s full name.                                                                 |
 | customer\_address    | VARCHAR(255) | Customer’s address.                                                                   |
 | customer\_state      | VARCHAR(30)  | Customer’s state of residence.                                                        |

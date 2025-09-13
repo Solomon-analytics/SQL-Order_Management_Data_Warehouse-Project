@@ -33,7 +33,7 @@ It consists of **dimension tables** and **fact tables** that capture sales order
 **Purpose**: Provides product master data including categories, pricing, and identifiers.
 
 | Column Name          | Data Type     | Description                                                                           |
-| -------------------- | ------------- | ------------------------------------------------------- ------------------------------|
+| -------------------- | ------------- | --------------------------------------------------------------------------------------|
 | product\_key         | VARCHAR(42)   | Surrogate key uniquely identifying each product record: concat('1', '-', product_id). |
 | product\_id          | VARCHAR(10)   | Natural identifier assigned to each product.                                          |
 | product\_name        | VARCHAR(100)  | Product name.                                                                         |

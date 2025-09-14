@@ -5,6 +5,14 @@ This project is developed to demonstrate a comprehensive data warehousing and an
 
 ---
 
+# Project Overview
+---
+This project involves:
+1. Data Architecture: Designing a modern Data Warehouse using the Medallion Architecture Bronze, Silver, and Gold layers
+2. ETL Pipelines: Extracting, transforming, and loading data from CRM and ERP source systems into the warehouse
+3. Data Modelling: Developing fact and dimension tables optimised for analytical queries and reporting.
+4. Analytical & Reporting creating SQL-based reports and dashboards for actionable insights.
+
 ## Project Requirements
 
 ### Building the Order Management Data Warehouse (Data Engineering)

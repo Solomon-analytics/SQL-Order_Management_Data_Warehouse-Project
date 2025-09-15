@@ -50,6 +50,8 @@ Develop SQL-based analytic reports to deliver detailed insights into:
   ---
 ## 📊 Data Architecture  
 
+![](sup_cleaning1.png)
+
 Below is the Medallion Architecture (Bronze → Silver → Gold) used in this project:  
 
 

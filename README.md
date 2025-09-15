@@ -49,10 +49,10 @@ Develop SQL-based analytic reports to deliver detailed insights into:
 
   ---
 ## 📊 Data Architecture  
+Below is the Medallion Architecture (Bronze → Silver → Gold) used in this project:
 
 ![](medallion_architecture.svg)
 
-Below is the Medallion Architecture (Bronze → Silver → Gold) used in this project:  
 
 
 

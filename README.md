@@ -52,7 +52,7 @@ Develop SQL-based analytic reports to deliver detailed insights into:
 
 Below is the Medallion Architecture (Bronze → Silver → Gold) used in this project:  
 
-![Medallion Architecture]("C:\Users\Yakub\Downloads\My Datawarehouse Project\medallion_architecture.svg")
+
 
 
 

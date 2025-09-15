@@ -1,12 +1,12 @@
 # Order Management Data Warehouse Project
 
 Welcome to the **Order Management Data Warehouse Project** repository!
-This project is developed to demonstrate a comprehensive data warehousing and analytics solution, building a data warehouse to generating actionable insights. Designed as a portfolio project to showcase industry best practices in data engineering and analytics.
+This project demonstrate a comprehensive data warehousing and analytics solution, showcasing how to design, build and optimise a modern data warehouse that generates actionable business insights. 
+It is developed as a portfolio project to highlight industry best practices in data engineering, data modelling and analytics.
 
 ---
 
 # Project Overview
-
 ---
 This project involves:
 1. Data Architecture: Designing a modern Data Warehouse using the Medallion Architecture Bronze, Silver, and Gold layers

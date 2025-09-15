@@ -20,25 +20,25 @@ This project covers the full data lifecycle:
 ### Building the Order Management Data Warehouse (Data Engineering)
 
 #### Objective:
-Develop a modern data warehouse using SQL to consolidate Sales, shipment, customers, stores, prododucts,
-sales person data, enabling analytical reporting and informed decision-making.
+Develop a modern data warehouse using SQL to consolidate data from ERP and CRM sources for each of the data for Sales, shipment, customers, stores, products,
+sales person data, which will be consumed for  data analysis tasks and reporting.
 
 ##### Specifications: 
 - **Data Sources**: Import data from two source systems (ERP and CRM) provided as CSV files.
-- **Data Quality**: Cleanse and resolve data quality issues prior tp analysis.
-- **Integration**: Consolidate data from both source into a single, user-friendly dta model designed
+- **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
+- **Integration**: Consolidate data from both source into a single, user-friendly data model designed
   for analytical queries
-- **Documentation**: Provide clear documentation of the data model to support busioness both business
+- **Documentation**: Provide clear documentation of the data model to support business both business
   stakeholders and analytics team.
 
   
 ---
 
-### Business Intelligence & Reporting (Data Analysis)
+### Data Analysis (Business Intelligence & Reporting)
 
 ####  Objective:
 
-Develop SQL-based analytics to deliver detailed insights into:
+Develop SQL-based analytic reports to deliver detailed insights into:
 - **Customer Purchasing Behaviour**
 - **Product Performance**
 - **Sales order Trends**

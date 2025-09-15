@@ -13,7 +13,7 @@ This project covers the full data lifecycle:
 3. Data Modelling: Developing fact and dimension tables optimised for analytical queries and reporting.
 4. Analytical & Reporting creating SQL-based reports using Views and dashboards to deliver actionable insights for stakeholders.
 
---
+---
 
 ## Project Requirements
 

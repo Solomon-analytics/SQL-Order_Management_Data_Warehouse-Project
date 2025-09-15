@@ -7,7 +7,7 @@ It is developed as a portfolio project to highlight industry best practices in d
 ---
 
 # Project Overview
----
+
 This project involves:
 1. Data Architecture: Designing a modern Data Warehouse using the Medallion Architecture Bronze, Silver, and Gold layers
 2. ETL Pipelines: Extracting, transforming, and loading data from CRM and ERP source systems into the warehouse

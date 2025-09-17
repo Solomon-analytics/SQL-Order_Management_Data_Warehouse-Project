@@ -82,10 +82,10 @@ SELECT CONCAT('bronze_erp_ship_details Load Duration: ', TIMESTAMPDIFF(SECOND, @
 
 
 -- --------------------------------------------------------------------------------------------------------
-SELECT '---------------------- Loading CRM Tables ----------------;
+SELECT '---------------------- Loading POS Tables ----------------;
 -- --------------------------------------------------------------------------------------------------------
 
--- Bronze CRM Customer Info
+-- Bronze POS Customer Info
 SET @start_time = NOW();
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/Customer_CRM.csv'
 INTO TABLE bronze_crm_customer_info
@@ -95,7 +95,7 @@ IGNORE 1 ROWS;
 SET @end_time = NOW();
 SELECT CONCAT('bronze_crm_customer_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
--- Bronze CRM Product Info
+-- Bronze POS Product Info
 SET @start_time = NOW();
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/products_crm.csv'
 INTO TABLE bronze_crm_product_info
@@ -105,7 +105,7 @@ IGNORE 1 ROWS;
 SET @end_time = NOW();
 SELECT CONCAT('bronze_crm_product_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
--- Bronze CRM Store Info
+-- Bronze POS Store Info
 SET @start_time = NOW();
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/store_crm.csv'
 INTO TABLE bronze_crm_store_info
@@ -115,7 +115,7 @@ IGNORE 1 ROWS;
 SET @end_time = NOW();
 SELECT CONCAT('bronze_crm_store_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
--- Bronze CRM Store Products Info
+-- Bronze POS Store Products Info
 SET @start_time = NOW();
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/Store_products_crm.csv'
 INTO TABLE bronze_crm_store_products_info
@@ -125,7 +125,7 @@ IGNORE 1 ROWS;
 SET @end_time = NOW();
 SELECT CONCAT('bronze_crm_store_products_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
--- Bronze CRM Sales Details
+-- Bronze POS Sales Details
 SET @start_time = NOW();
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/sales_orders_crm.csv'
 INTO TABLE bronze_crm_sales_details
@@ -135,7 +135,7 @@ IGNORE 1 ROWS;
 SET @end_time = NOW();
 SELECT CONCAT('bronze_crm_sales_details Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
--- Bronze CRM Ship Details
+-- Bronze POS Ship Details
 SET @start_time = NOW();
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/ship_crm.csv'
 INTO TABLE bronze_crm_ship_details

@@ -32,7 +32,7 @@ Develop a modern data warehouse using SQL to consolidate data from POS and CRM s
 sales person data, making it ready for analysis and reporting.
 
 ##### Specifications: 
-- **Data Sources**: * All data used in this project is **simulated** and generated for learning purposes.
+- **Data Sources**: All data used in this project is **simulated** and generated for learning purposes.
 - **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
 - **Integration**: Consolidate data from ERP and POS into a single, user-friendly data model designed
   for analytical queries and reporting.

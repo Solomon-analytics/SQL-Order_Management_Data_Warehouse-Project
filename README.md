@@ -71,4 +71,4 @@ Below is the Medallion Architecture (Bronze → Silver → Gold) used in this pr
 
   ## About Me
 
-  Hi there! I am **Solomon Yakubu** I am a data professional with over 3 years of experience building scalable solutions that helps technical and non-technical stakeholders make informed decisions.
+  Hi, I am **Solomon Yakubu**, a data professional with over 3 years of experience building scalable solutions that help technical and non-technical stakeholders make informed decisions.

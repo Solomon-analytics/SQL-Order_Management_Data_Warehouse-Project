@@ -87,63 +87,63 @@ SELECT '---------------------- Loading POS Tables ----------------;
 
 -- Bronze POS Customer Info
 SET @start_time = NOW();
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/Customer_CRM.csv'
-INTO TABLE bronze_crm_customer_info
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/Customer_POS.csv'
+INTO TABLE bronze_pos_customer_info
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SET @end_time = NOW();
-SELECT CONCAT('bronze_crm_customer_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
+SELECT CONCAT('bronze_pos_customer_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
 -- Bronze POS Product Info
 SET @start_time = NOW();
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/products_crm.csv'
-INTO TABLE bronze_crm_product_info
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/products_POS.csv'
+INTO TABLE bronze_pos_product_info
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SET @end_time = NOW();
-SELECT CONCAT('bronze_crm_product_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
+SELECT CONCAT('bronze_pos_product_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
 -- Bronze POS Store Info
 SET @start_time = NOW();
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/store_crm.csv'
-INTO TABLE bronze_crm_store_info
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/store_POS.csv'
+INTO TABLE bronze_pos_store_info
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SET @end_time = NOW();
-SELECT CONCAT('bronze_crm_store_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
+SELECT CONCAT('bronze_pos_store_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
 -- Bronze POS Store Products Info
 SET @start_time = NOW();
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/Store_products_crm.csv'
-INTO TABLE bronze_crm_store_products_info
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/Store_products_POS.csv'
+INTO TABLE bronze_pos_store_products_info
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SET @end_time = NOW();
-SELECT CONCAT('bronze_crm_store_products_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
+SELECT CONCAT('bronze_pos_store_products_info Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
 -- Bronze POS Sales Details
 SET @start_time = NOW();
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/sales_orders_crm.csv'
-INTO TABLE bronze_crm_sales_details
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/sales_orders_POS.csv'
+INTO TABLE bronze_pos_sales_details
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SET @end_time = NOW();
-SELECT CONCAT('bronze_crm_sales_details Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
+SELECT CONCAT('bronze_pos_sales_details Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
 -- Bronze POS Ship Details
 SET @start_time = NOW();
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/ship_crm.csv'
-INTO TABLE bronze_crm_ship_details
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.4/Uploads/ship_POS.csv'
+INTO TABLE bronze_pos_ship_details
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SET @end_time = NOW();
-SELECT CONCAT('bronze_crm_ship_details Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
+SELECT CONCAT('bronze_pos_ship_details Load Duration: ', TIMESTAMPDIFF(SECOND, @start_time, @end_time), ' seconds') AS msg;
 
 -- ==================================================================================
 SELECT 'Loading Bronze Layer Completed';

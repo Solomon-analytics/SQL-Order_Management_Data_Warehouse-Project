@@ -58,7 +58,7 @@ FROM bronze_erp_customer_info;
 
 
 /*--------------------------------------------------------------------------------------------
-    -- ERP Customer Staging
+    -- CRM Customer Staging
 ---------------------------------------------------------------------------------------------*/
 
 CREATE OR REPLACE VIEW staging_crm_customer AS 

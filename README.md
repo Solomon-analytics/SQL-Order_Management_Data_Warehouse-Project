@@ -1,7 +1,9 @@
 # Order Management Data Warehouse Project
 
 Welcome to the **Order Management Data Warehouse Project** repository!
-In this project, i dsigned and developed a data warehouse and analytics solution, transforming raw data through medallion architecture layers into business-ready data for analytics and reporting purposes.
+---
+In this project, i designed and developed a data warehouse and analytics solution, utilising medallion architecture best practices to transform raw data from two sources into business-ready data for analytics and reporting purposes.
+
 This project is developed as a portfolio project to highlight industry best practices in data engineering, data modelling and analytics.
 
 ---

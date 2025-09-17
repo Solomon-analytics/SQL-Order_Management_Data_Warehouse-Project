@@ -62,7 +62,7 @@ The warehouse follows a Medallion Architecture:
 ---
 Below is the Medallion Architecture (Bronze → Silver → Gold) used in this project:
 
-![](medallion_architecture.svg)
+![](medallion_architecture_diagram.svg)
 
 
 

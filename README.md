@@ -9,7 +9,7 @@ It is developed as a portfolio project to highlight industry best practices in d
 # Project Overview
 This project covers the full data lifecycle:
 1. Data Architecture: Designing a modern Data Warehouse using the Medallion Architecture Bronze, Silver, and Gold layers
-2. ETL Pipelines: Extracting, transforming, and loading data from CRM and ERP source systems into the warehouse
+2. ETL Pipelines: Extracting, transforming, and loading data from POS and ERP source systems into the warehouse
 3. Data Modelling: Developing fact and dimension tables optimised for analytical queries and reporting.
 4. Analytical & Reporting creating SQL-based reports using Views and dashboards to deliver actionable insights for stakeholders.
 
@@ -24,7 +24,7 @@ Develop a modern data warehouse using SQL to consolidate data from ERP and CRM s
 sales person data, which will be consumed for  data analysis tasks and reporting.
 
 ##### Specifications: 
-- **Data Sources**: Import data from two source systems (ERP and CRM) provided as CSV files.
+- **Data Sources**: Import data from two source systems (ERP and POS) provided as CSV files.
 - **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
 - **Integration**: Consolidate data from both source into a single, user-friendly data model designed
   for analytical queries

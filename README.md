@@ -1,10 +1,16 @@
 # Order Management Data Warehouse Project
 
 Welcome to the **Order Management Data Warehouse Project** repository!
-This project demonstrate a comprehensive data warehousing and analytics solution, showcasing how to design, build and optimise a modern data warehouse that generates actionable business insights. 
-It is developed as a portfolio project to highlight industry best practices in data engineering, data modelling and analytics.
+In this project, i dsigned and developed a data warehouse and analytics solution, transforming raw data through medallion architecture layers into business-ready data for analytics and reporting purposes.
+This project is developed as a portfolio project to highlight industry best practices in data engineering, data modelling and analytics.
 
 ---
+**The raw data came from two different sources**:
+
+* ERP (Enterprise Resource Planning): contains sales orders, product information, store data, and shipment details.
+* POS (Point of sales): contains sales transactions, product and store details, customer information, and shipment data.
+---
+
 
 # Project Overview
 This project covers the full data lifecycle:
@@ -20,14 +26,14 @@ This project covers the full data lifecycle:
 ### Building the Order Management Data Warehouse (Data Engineering)
 
 #### Objective:
-Develop a modern data warehouse using SQL to consolidate data from ERP and CRM sources for each of the data for Sales, shipment, customers, stores, products,
-sales person data, which will be consumed for  data analysis tasks and reporting.
+Develop a modern data warehouse using SQL to consolidate data from POS and CRM sources for each of the data for Sales, shipment, customers, stores, products,
+sales person data, making it ready for analysis and reporting.
 
 ##### Specifications: 
-- **Data Sources**: Import data from two source systems (ERP and POS) provided as CSV files.
+- **Data Sources**: * All data used in this project is **simulated** and generated for learning purposes.
 - **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
-- **Integration**: Consolidate data from both source into a single, user-friendly data model designed
-  for analytical queries
+- **Integration**: Consolidate data from ERP and POS into a single, user-friendly data model designed
+  for analytical queries and reporting.
 - **Documentation**: Provide clear documentation of the data model to support business both business
   stakeholders and analytics team.
 
@@ -49,6 +55,11 @@ Develop SQL-based analytic reports to deliver detailed insights into:
 
   ---
 ## 📊 Data Architecture  
+The warehouse follows a Medallion Architecture:
+* **Bronze Layer**: Raw data ingested from ERP and POS systems
+* **Silver Layer**: Cleaned and standardised data ready for analysis.
+* **Gold Layer**: Analytical aggregates, business-ready queries, and KPIs views for business users.
+---
 Below is the Medallion Architecture (Bronze → Silver → Gold) used in this project:
 
 ![](medallion_architecture.svg)

@@ -11,8 +11,8 @@ DROP SCHEMA IF EXISTS bronze_sales_order_management;
 
 CREATE SCHEMA IF NOT EXISTS bronze_sales_order_management;
 
-DROP TABLE IF EXISTS bronze_crm_customer_info;
-CREATE TABLE IF NOT EXISTS bronze_crm_customer_info (
+DROP TABLE IF EXISTS bronze_pos_customer_info;
+CREATE TABLE IF NOT EXISTS bronze_pos_customer_info (
 id CHAR(50),
     status CHAR(10),
     names varchar(30),
@@ -51,8 +51,8 @@ product_id VARCHAR(255),
 );
 
 
-DROP TABLE IF EXISTS bronze_crm_product_info;
-CREATE TABLE IF NOT EXISTS bronze_crm_product_info(
+DROP TABLE IF EXISTS bronze_pos_product_info;
+CREATE TABLE IF NOT EXISTS bronze_pos_product_info(
 product_id VARCHAR(255),
     product_name VARCHAR(255) NOT NULL,
     store_location_name VARCHAR(255),
@@ -65,8 +65,8 @@ product_id VARCHAR(255),
     PRIMARY KEY(product_id)
 );
 
-DROP TABLE IF EXISTS bronze_crm_store_info;
-CREATE TABLE IF NOT EXISTS bronze_crm_store_info(
+DROP TABLE IF EXISTS bronze_pos_store_info;
+CREATE TABLE IF NOT EXISTS bronze_pos_store_info(
 Store_Location_id VARCHAR(10),
 store_location_address VARCHAR(100)
 );
@@ -78,8 +78,8 @@ Store_Location_id VARCHAR(30),
 store_location_address VARCHAR(100)
 );
 
-DROP TABLE IF EXISTS bronze_crm_Store_products_info;
-CREATE TABLE IF NOT EXISTS bronze_crm_Store_products_info(
+DROP TABLE IF EXISTS bronze_pos_Store_products_info;
+CREATE TABLE IF NOT EXISTS bronze_pos_Store_products_info(
 store_location_id VARCHAR(50), 
 product_id VARCHAR(50), 
 available_quantity varchar(15), 
@@ -105,8 +105,8 @@ sales_person_id VARCHAR(255),
     salary VARCHAR(20)
 );
 
-DROP TABLE IF EXISTS bronze_crm_sales_person_info;
-CREATE TABLE IF NOT EXISTS bronze_crm_sales_person_info(
+DROP TABLE IF EXISTS bronze_pos_sales_person_info;
+CREATE TABLE IF NOT EXISTS bronze_pos_sales_person_info(
 sales_person_id VARCHAR(255),
     store_location_id VARCHAR(255),
     sales_person_name VARCHAR(255),
@@ -117,8 +117,8 @@ sales_person_id VARCHAR(255),
 );
 
 
-DROP TABLE IF EXISTS bronze_crm_sales_details;
-CREATE TABLE IF NOT EXISTS bronze_crm_sales_details(
+DROP TABLE IF EXISTS bronze_pos_sales_details;
+CREATE TABLE IF NOT EXISTS bronze_pos_sales_details(
 order_id VARCHAR(255),
     product_id VARCHAR(255),
     store_location_id VARCHAR(255),
@@ -186,8 +186,8 @@ order_id VARCHAR(255),
 );
 
 
-DROP TABLE IF EXISTS bronze_crm_ship_details;
-CREATE TABLE IF NOT EXISTS bronze_crm_ship_details(
+DROP TABLE IF EXISTS bronze_pos_ship_details;
+CREATE TABLE IF NOT EXISTS bronze_pos_ship_details(
 order_id VARCHAR(255),
     ship_id VARCHAR(255),
     product_id VARCHAR(255),

@@ -29,7 +29,7 @@ bronze_sales_order_management.staging_erp_sales_details;
 
 
 -------------------------------------------------------------
--- Customer Silver Layer: Consolidating ERP & CRM Customers
+-- Customer Silver Layer: Consolidating ERP & POS Customers
 -------------------------------------------------------------
 
 DROP TABLE IF EXISTS Customer_silver_layer;
@@ -53,11 +53,11 @@ SELECT *
 FROM bronze_sales_order_management.staging_erp_customer
 UNION 
 SELECT *
-FROM bronze_sales_order_management.staging_crm_customer;
+FROM bronze_sales_order_management.staging_pos_customer;
 
 
 -------------------------------------------------------------
--- Product Silver Layer: Consolidating ERP & CRM Products
+-- Product Silver Layer: Consolidating ERP & POS Products
 -------------------------------------------------------------
 
 DROP TABLE IF EXISTS Product_Silver_layer;
@@ -75,11 +75,11 @@ SELECT *
 FROM bronze_sales_order_management.staging_erp_product
 UNION
 SELECT *
-FROM bronze_sales_order_management.staging_crm_product;
+FROM bronze_sales_order_management.staging_pos_product;
 
 
 -------------------------------------------------------------
--- Store Product Silver Layer: ERP & CRM Store Inventory
+-- Store Product Silver Layer: ERP & POS Store Inventory
 -------------------------------------------------------------
 
 DROP TABLE IF EXISTS store_product_silver_layer;
@@ -98,11 +98,11 @@ SELECT *
 FROM bronze_sales_order_management.staging_erp_store_product
 UNION
 SELECT *
-FROM bronze_sales_order_management.staging_crm_store_product;
+FROM bronze_sales_order_management.staging_pos_store_product;
 
 
 -------------------------------------------------------------
--- Store Silver Layer: Consolidating ERP & CRM Stores
+-- Store Silver Layer: Consolidating ERP & POS Stores
 -------------------------------------------------------------
 
 DROP TABLE IF EXISTS Store_silver_layer;
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS Store_silver_layer (
 
 INSERT INTO Store_silver_layer
 SELECT * 
-FROM bronze_sales_order_management.staging_crm_store
+FROM bronze_sales_order_management.staging_pos_store
 UNION
 SELECT *
 FROM bronze_sales_order_management.staging_erp_store;
@@ -144,7 +144,7 @@ FROM bronze_sales_order_management.staging_erp_sales_person;
 
 
 -------------------------------------------------------------
--- Order Shipment Silver Layer: ERP & CRM Shipment Data
+-- Order Shipment Silver Layer: ERP & POS Shipment Data
 -------------------------------------------------------------
 
 DROP TABLE IF EXISTS Order_Ship_silver_layer;
@@ -180,11 +180,11 @@ SELECT *
 FROM bronze_sales_order_management.staging_erp_ship_details
 UNION
 SELECT * 
-FROM bronze_sales_order_management.staging_crm_ship_details;
+FROM bronze_sales_order_management.staging_pos_ship_details;
 
 
 -------------------------------------------------------------
--- Sales Details Silver Layer: ERP & CRM Sales Orders
+-- Sales Details Silver Layer: ERP & POS Sales Orders
 -------------------------------------------------------------
 
 DROP TABLE IF EXISTS sales_details_silver__layer;
@@ -221,7 +221,7 @@ CREATE TABLE IF NOT EXISTS sales_details_silver__layer (
 
 INSERT INTO sales_details_silver__layer
 SELECT *
-FROM bronze_sales_order_management.staging_Crm_sales_details
+FROM bronze_sales_order_management.staging_pos_sales_details
 UNION
 SELECT *
 FROM bronze_sales_order_management.staging_erp_sales_details;

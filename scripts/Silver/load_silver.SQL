@@ -3,7 +3,7 @@
 Load Silver Layer (Bronze --> silver)
 =========================================================================
 Script purpose:
-  This script populates the silver database tables from the bzonze database
+  This script populates the silver database tables from the bronze database
   using the each of the views created in the bronze database.
 Action performed:
 - Drop table if it exists in the database

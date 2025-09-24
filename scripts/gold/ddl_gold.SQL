@@ -229,9 +229,9 @@ WITH base_shipments AS (
         s.store_country AS ship_from_country,
         s.store_postcode AS ship_from_postcode
     FROM silver_sales_order_management.order_ship_silver_layer so
-    INNER JOIN silver_sales_order_management.customer_silver_layer c 
+    LEFT JOIN silver_sales_order_management.customer_silver_layer c 
         ON c.customer_id = so.customer_id
-    INNER JOIN silver_sales_order_management.store_silver_layer s 
+    LEFT JOIN silver_sales_order_management.store_silver_layer s 
         ON s.store_location_id = so.store_location_id
 )
 SELECT

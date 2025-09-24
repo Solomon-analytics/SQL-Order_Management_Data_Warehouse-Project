@@ -28,7 +28,7 @@ This project covers the full data lifecycle:
 ### Building the Order Management Data Warehouse (Data Engineering)
 
 #### Objective:
-Develop a modern data warehouse using SQL to consolidate data from POS and CRM sources for each of the data for Sales, shipment, customers, stores, products,
+Develop a modern data warehouse using SQL to consolidate data from POS and ERP sources for each of the data for Sales, shipment, customers, stores, products,
 sales person data, making it ready for analysis and reporting.
 
 ##### Specifications: 

@@ -178,11 +178,11 @@ WITH base_orders AS (
         s.store_country,
         s.store_postcode
     FROM silver_sales_order_management.sales_details_silver__layer so
-    INNER JOIN silver_sales_order_management.customer_silver_layer c 
+    LEFT JOIN silver_sales_order_management.customer_silver_layer c 
         ON c.customer_id = so.customer_id
-    INNER JOIN silver_sales_order_management.store_silver_layer s 
+    LEFT JOIN silver_sales_order_management.store_silver_layer s 
         ON s.store_location_id = so.store_location_id
-    INNER JOIN silver_sales_order_management.product_silver_layer sp 
+    LEFT JOIN silver_sales_order_management.product_silver_layer sp 
         ON sp.product_id = so.product_id
 )
 SELECT

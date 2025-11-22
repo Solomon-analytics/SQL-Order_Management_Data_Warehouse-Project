@@ -66,11 +66,9 @@ Below is the Medallion Architecture (Bronze → Silver → Gold) used in this pr
 
 ![](medallion_architecture_diagram.svg)
 
+---
 
 
-
-
-
-  ## About Me
+## About Me
 
 Hi, I am **Solomon Yakubu**, a data professional with 4 years of experience building solutions that enables technical and non-technical teams make better decisions. I have rcently completed a data warehouse    project using MYSQL database where i applied medallion architecture best practices to turn raw data into business ready data.
